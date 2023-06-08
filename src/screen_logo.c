@@ -46,6 +46,8 @@ static int rightSideRecHeight = 0;
 static int state = 0;              // Logo animation states
 static float alpha = 1.0f;         // Useful for fading
 
+Image logo;
+Texture2D texture;
 //----------------------------------------------------------------------------------
 // Logo Screen Functions Definition
 //----------------------------------------------------------------------------------
@@ -53,6 +55,8 @@ static float alpha = 1.0f;         // Useful for fading
 // Logo Screen Initialization logic
 void InitLogoScreen(void)
 {
+    logo = LoadImage("resources/baja_logo_1.png");
+    texture = LoadTextureFromImage(logo);
     finishScreen = 0;
     framesCounter = 0;
     lettersCount = 0;
@@ -72,6 +76,7 @@ void InitLogoScreen(void)
 // Logo Screen Update logic
 void UpdateLogoScreen(void)
 {
+    finishScreen = 1;
     if (state == 0)                 // State 0: Top-left square corner blink logic
     {
         framesCounter++;
@@ -125,49 +130,17 @@ void UpdateLogoScreen(void)
 }
 
 // Logo Screen Draw logic
-void DrawLogoScreen(void)
-{
-    if (state == 0)         // Draw blinking top-left square corner
-    {
-        if ((framesCounter/10)%2) DrawRectangle(logoPositionX, logoPositionY, 16, 16, BLACK);
-    }
-    else if (state == 1)    // Draw bars animation: top and left
-    {
-        DrawRectangle(logoPositionX, logoPositionY, topSideRecWidth, 16, BLACK);
-        DrawRectangle(logoPositionX, logoPositionY, 16, leftSideRecHeight, BLACK);
-    }
-    else if (state == 2)    // Draw bars animation: bottom and right
-    {
-        DrawRectangle(logoPositionX, logoPositionY, topSideRecWidth, 16, BLACK);
-        DrawRectangle(logoPositionX, logoPositionY, 16, leftSideRecHeight, BLACK);
-
-        DrawRectangle(logoPositionX + 240, logoPositionY, 16, rightSideRecHeight, BLACK);
-        DrawRectangle(logoPositionX, logoPositionY + 240, bottomSideRecWidth, 16, BLACK);
-    }
-    else if (state == 3)    // Draw "raylib" text-write animation + "powered by"
-    {
-        DrawRectangle(logoPositionX, logoPositionY, topSideRecWidth, 16, Fade(BLACK, alpha));
-        DrawRectangle(logoPositionX, logoPositionY + 16, 16, leftSideRecHeight - 32, Fade(BLACK, alpha));
-
-        DrawRectangle(logoPositionX + 240, logoPositionY + 16, 16, rightSideRecHeight - 32, Fade(BLACK, alpha));
-        DrawRectangle(logoPositionX, logoPositionY + 240, bottomSideRecWidth, 16, Fade(BLACK, alpha));
-
-        DrawRectangle(GetScreenWidth()/2 - 112, GetScreenHeight()/2 - 112, 224, 224, Fade(RAYWHITE, alpha));
-
-        DrawText(TextSubtext("raylib", 0, lettersCount), GetScreenWidth()/2 - 44, GetScreenHeight()/2 + 48, 50, Fade(BLACK, alpha));
-
-        if (framesCounter > 20) DrawText("powered by", logoPositionX, logoPositionY - 27, 20, Fade(DARKGRAY, alpha));
-    }
+void DrawLogoScreen(void) {
+    DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), BLACK);
+    DrawTexture(texture, GetScreenWidth()/2 - texture.width/2, GetScreenHeight()/2 - texture.height/2 - 40, WHITE);
 }
 
 // Logo Screen Unload logic
-void UnloadLogoScreen(void)
-{
+void UnloadLogoScreen(void) {
     // Unload LOGO screen variables here!
 }
 
 // Logo Screen should finish?
-int FinishLogoScreen(void)
-{
+int FinishLogoScreen(void) {
     return finishScreen;
 }
