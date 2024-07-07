@@ -51,7 +51,7 @@ void calculateSpeedLocations(double centerX, double centerY, double radius, doub
     int initSpeed = 0;
 
 	// Calculate the number of steps
-	int numSteps = 10;
+	int numSteps = 15;
 
 	// Calculate the angle increment per step
 	double angleIncrement = (endAngle - startAngle) / numSteps;

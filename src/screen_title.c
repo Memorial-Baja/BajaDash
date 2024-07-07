@@ -1,20 +1,19 @@
-#include "raylib.h"
-#include "rlgl.h"
-#include "screens.h"
 #include <stdio.h> 
 #include <math.h>
+#include <raylib.h>
+#include <rlgl.h>
+#include "screens.h"
 #include "gauges.h"
 
 static int framesCounter = 0;
 static int finishScreen = 0;
 static float heightOffset = 30.0f;
-int rpm = 3000;
+int rpm = 2000;
 const int rpmMax = 5000;
 int speed = 15;
-const int speedMax = 50;
+const int speedMax = 75;
 float temp = 0;
 float voltage = 6;
-float angle = 225;
 bool maxAngle = false;
 
 // Title Screen Initialization logic
@@ -60,7 +59,7 @@ void DrawTitleScreen(void) {
         2,
         RAYWHITE
     );
-    calculateSpeedLocations(speedCenter.x, speedCenter.y-10, 160, -225.0f, 45.0f, &font);
+    calculateSpeedLocations(speedCenter.x, speedCenter.y-10, 160, -223.5f, 41.5f, &font);
     // calculateSemiCircle(rpmCenter.x, rpmCenter.y-10, 150, 360, 0, 10);
 
     DrawCircle(rpmCenter.x, rpmCenter.y, 210, BLACK);
@@ -86,17 +85,21 @@ void DrawTitleScreen(void) {
         RAYWHITE
     );
 
-    calculateRPMLocations(rpmCenter.x, rpmCenter.y-10, 160, -225.0f, 45.0f, &font);
+    calculateRPMLocations(rpmCenter.x, rpmCenter.y-10, 160, -223.5f, 41.5f, &font);
 
     if (speed == speedMax && !maxAngle) {
         maxAngle = true;
     } else if (speed <= 0 && maxAngle) {
         speed = 0;
+        rpm = 0;
     } else if (speed <= speedMax && maxAngle) {
         speed -= 1;
+        rpm -= 100;
     } else if(!maxAngle) {
         speed += 1;
+        rpm += 100;
     }
+
     DrawFPS(1, 1);
 }
 
